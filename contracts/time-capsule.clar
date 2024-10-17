@@ -29,3 +29,33 @@
     (err ERR_NOT_FOUND)
   )
 )
+
+(define-read-only (is-capsule-unlocked (capsule-id uint))
+  (match (map-get? time-capsules { id: capsule-id })
+    capsule (> block-height (get unlock-time capsule))
+    false
+  )
+)
+
+;; Public Functions
+
+(define-public (submit-capsule (content (string-ascii 256)) (unlock-time uint) (is-nft bool) (nft-id (optional uint)))
+  (let
+    (
+      (new-id (var-get next-capsule-id))
+    )
+    (map-insert time-capsules
+      { id: new-id }
+      {
+        owner: tx-sender,
+        content: content,
+        unlock-time: unlock-time,
+        is-nft: is-nft,
+        nft-id: nft-id
+      }
+    )
+    (var-set next-capsule-id (+ new-id u1))
+    (ok new-id)
+  )
+)
+

@@ -1,40 +1,3 @@
-# Pull Request: Blockchain Time Capsule Smart Contract
-
-## Changes Introduced
-This PR introduces a new smart contract for a blockchain-based time capsule system. The contract allows users to submit messages or NFTs that are locked for a specified period before becoming publicly viewable.
-
-### Key Features:
-- Submit text messages or NFT IDs as time capsules
-- Set a future unlock time for each capsule
-- View capsule contents only after the unlock time has passed
-- Update capsule contents (owner only)
-- Basic NFT support (placeholder implementation)
-
-## Files Changed
-- `contracts/blockchain-time-capsule.clar`: New Clarity smart contract
-- `tests/blockchain-time-capsule.test.ts`: New test suite for the contract
-- `README.md`: Updated with project details and usage instructions
-
-## Testing
-A comprehensive test suite has been added using Vitest. The tests cover:
-- Submitting new capsules
-- Attempting to view locked capsules
-- Viewing unlocked capsules
-- Updating capsules by the owner
-- Attempting unauthorized updates
-
-To run the tests:
-```bash
-npm run test
-```
-
-## Deployment
-The contract is ready for deployment to the Stacks blockchain. Ensure you have the necessary credentials and blockchain connection set up before deploying.
-
----
-
-# README.md
-
 # Blockchain Time Capsule
 
 A smart contract implementation of a time capsule system on the Stacks blockchain. Users can submit messages or NFTs that are locked for a specified time before becoming publicly viewable.
@@ -91,10 +54,39 @@ Once deployed, interact with the contract using the Stacks API or a frontend app
 - `update-capsule`: Modify an existing capsule (owner only)
 - `submit-nft-capsule`: Lock an NFT in the time capsule (basic implementation)
 
+### Example: Submitting a Capsule
+
+```clarity
+(contract-call? .blockchain-time-capsule submit-capsule "Hello, Future!" u100000 false none)
+```
+
+This creates a new capsule with the message "Hello, Future!" that unlocks at block height 100000.
+
+### Example: Viewing a Capsule
+
+```clarity
+(contract-call? .blockchain-time-capsule view-capsule u1)
+```
+
+This attempts to view the contents of capsule with ID 1. It will only succeed if the current block height is greater than the capsule's unlock time.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+## Acknowledgments
+
+- Stacks blockchain community
+- Clarity language developers
+
+For more information on Stacks and Clarity, visit [Stacks documentation](https://docs.stacks.co).

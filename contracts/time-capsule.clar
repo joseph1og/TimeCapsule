@@ -59,3 +59,29 @@
   )
 )
 
+(define-public (view-capsule (capsule-id uint))
+  (match (map-get? time-capsules { id: capsule-id })
+    capsule (if (> block-height (get unlock-time capsule))
+              (ok (get content capsule))
+              (err ERR_NOT_UNLOCKED))
+    (err ERR_NOT_FOUND)
+  )
+)
+
+(define-public (update-capsule (capsule-id uint) (new-content (string-ascii 256)))
+  (match (map-get? time-capsules { id: capsule-id })
+    capsule
+      (if (is-eq tx-sender (get owner capsule))
+        (begin
+          (map-set time-capsules
+            { id: capsule-id }
+            (merge capsule { content: new-content })
+          )
+          (ok true)
+        )
+        (err ERR_NOT_AUTHORIZED)
+      )
+    (err ERR_NOT_FOUND)
+  )
+)
+

@@ -85,3 +85,26 @@
   )
 )
 
+;; NFT-related functions (placeholder, as actual NFT implementation would depend on specific NFT standard)
+(define-public (submit-nft-capsule (nft-id uint) (unlock-time uint))
+  (let
+    (
+      (new-id (var-get next-capsule-id))
+    )
+    ;; Here you would typically check if the user owns the NFT and transfer it to the contract
+    ;; For this example, we'll just create a capsule entry
+    (map-insert time-capsules
+      { id: new-id }
+      {
+        owner: tx-sender,
+        content: "NFT Time Capsule",
+        unlock-time: unlock-time,
+        is-nft: true,
+        nft-id: (some nft-id)
+      }
+    )
+    (var-set next-capsule-id (+ new-id u1))
+    (ok new-id)
+  )
+)
+
